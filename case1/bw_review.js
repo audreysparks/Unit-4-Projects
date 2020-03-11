@@ -32,10 +32,36 @@
       Returns the number of a non-whitespace characters
       within textStr
 
-*/
+*/   
+document.getElementById('loaded').innerHTML = init()
 
+function init(){
+   var stars = imgSelector("span#stars") ;
+   for(var i = 0; i < mouseenter; i++){
+      document.getElementById('mouseenter').innerHTML = lightStars();
+   }
+}
 
+function lightStars(){
 
+   var stars = ;
+   for(){
+
+   }
+   
+}
+function turnOffStars(){
+
+}
+
+function updateCount(){
+   var commentText;
+   function countCharacters(commentText){
+      var charCount;
+      
+   }
+
+}
   
 
 
