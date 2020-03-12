@@ -5,8 +5,8 @@
    Tutorial 11
    Case Problem 1
 
-   Author: 
-   Date:   
+   Author: Audrey Sparks
+   Date:   3-11-2020
    
    Filename: bw_review.js
 	
@@ -32,36 +32,60 @@
       Returns the number of a non-whitespace characters
       within textStr
 
-*/   
-document.getElementById('loaded').innerHTML = init()
+*/ 
+  
+window.onload = init();
 
-function init(){
-   var stars = imgSelector("span#stars") ;
-   for(var i = 0; i < mouseenter; i++){
-      document.getElementById('mouseenter').innerHTML = lightStars();
+function init() {// Initializes the contents of the web page and sets up the event handlers.
+   //selects every star image and stores as shorthand array
+   var stars = document.querySelectorAll("span#stars img");
+
+   for (var i = 0; i < stars.length; i++) {
+      stars[i].style.cursor = "pointer"; //add pointer
+
+      stars[i].addEventListener("mouseenter", lightStars); //stars to show up
+   }
+   document.querySelector("textarea").addEventListener("keyup", updateCont);
+}
+
+function lightStars(event) { // Function that colors the stars representing the user rating for the book.
+   var stars = document.querySelectorAll("span#stars img") //have the yellow stars pop up 
+   var target = event.target;
+   target.addEventListener("mouseleave", function (event) {
+      console.log("leaving", event.target.getAttribute("alt"));
+      var leavingStarNumber = event.target.getAttribute("alt")
+      for (var i = leavingStarNumber; i < stars.length; i++) {
+         stars[i].src = "bw_star.png";
+         console.log(stars)
+      }
+   })
+   var starNumber = event.target.getAttribute("alt");
+   console.log("test", starNumber);
+
+   for (var i = 0; i < starNumber; i++) { //have star pop up when hovered
+      stars[i].src = "bw_star2.png";
+      document.querySelector("input#rating").value = starNumber + " stars";
+   }
+   for (var i = starNumber; i < 5; i++) {
+      stars[i].src = "bw_star.png";
+
+      console.log("Exit", i); //when mouse is moved star stays in place
    }
 }
 
-function lightStars(){
-
-   var stars = ;
-   for(){
-
-   }
-   
-}
-function turnOffStars(){
+function updateCont() {  // Updates the count of characters in the wordCountBox element.
+   var comentText = "textarea";
+   var charCount = countCharacters(commentText);
 
 }
 
-function updateCount(){
-   var commentText;
-   function countCharacters(commentText){
-      var charCount;
-      
-   }
+/*=================================================================*/
 
-}
+function countCharacters(textStr) {
+   var commentregx = /\s/g;
+   var chars = textStr.replace(commentregx, "");
+   return chars.length;
+}   
   
 
 
