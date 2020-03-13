@@ -32,43 +32,77 @@
       Returns the previous expression from the list of expressions in the textStr parameter
 
 */
-window.onload = init();
-function init() { //Initializes the contents of the web page and sets up the event handlers
-var calcButtons = document.querySelectorAll("calcButton");
-for (var i = 0; i < calcButtons.length; i++) {
-   calcButtons[i].style.cursor = "click";
-
-   calcKeys()[i].addEventListener("calcWindow");
-
-}
-}
-
-function buttonClick(e){ //Adds functions to the buttons clicked within the calcutlor
-
-   var calcValue = "calcWindow";
-   var calcDecimal = "decimals"; 
-   buttonValue()[i].addEventListener("calcWindow");
+window.onload = init;
+function init() { //  Initializes the contents of the web page and sets up the event handlers
+  var calcButtons = document.getElementsByClassName("calcButton");
+  for (var i = 0; i < calcButtons.length; i++) {
+     calcButtons[i].addEventListener("click", buttonClick);
+  }
+  document.getElementById("calcWindow").addEventListener("keydown", calcKeys);
 }
 
 
+function buttonClick(e) { //Adds functions to the buttons clicked within the calcutlor
+
+  var calcValue = document.getElementById("calcWindow").value;
+  var calcDecimal = document.getElementById("decimals").value;
+  var buttonValue = e.target.value;
+  switch (buttonValue) {
+     case "del":
+        calcValue = "";
+        break;
+     case "bksp":
+        calcValue = eraseChar(calcValue);
+        break;
+     case "enter":
+        calcValue += " = " + evalEq(calcValue, calcDecimal) + "\n";
+        break;
+     case "prev":
+        calcValue += lastEq(calcValue);
+        break;
+     default: 
+        calcValue += buttonValue;
+        break;
+  }
+
+  document.getElementById("calcWindow").value = calcValue;
+
+  document.getElementById("calcWindow").focus();
 
 
+}
+function calcKeys(e){ //Adds functions to key pressed within the calculator window
+  var calcValue = document.getElementById("calcWindow").value;
+  var calcDecimal = document.getElementById("decimals").value;
+  switch (e.key) {
+     case "delete":
+        calcValue = "";
+     break;
+     case "enter":
+        calcValue += " = " + evalEq(calcValue, calcDecimal);
+     break;
+     case "arrowUp":
+        calcValue += lastEq(calcWindow.value);
+     default:
+       e.preventDefault();
+  }
+  document.getElementById("calcWindow").value = calcValue;
 
+}
 /* ===================================================================== */
 
-function eraseChar(textStr) { 
-   return textStr.substr(0, textStr.length - 1);
+function eraseChar(textStr) {
+  return textStr.substr(0, textStr.length - 1);
 }
 
 function evalEq(textStr, decimals) {
-   var lines = textStr.split(/\r?\n/);
-   var lastLine = lines[lines.length-1];
-   var eqValue = eval(lastLine);
-   return eqValue.toFixed(decimals);
-}  
-
+  var lines = textStr.split(/\r?\n/);
+  var lastLine = lines[lines.length - 1];
+  var eqValue = eval(lastLine);
+  return eqValue.toFixed(decimals);
+}
 function lastEq(textStr) {
-   var lines = textStr.split(/\r?\n/);
-   var lastExp = lines[lines.length-2];
-   return lastExp.substr(0, lastExp.indexOf("=")).trim();
+  var lines = textStr.split(/\r?\n/);
+  var lastExp = lines[lines.length - 2];
+  return lastExp.substr(0, lastExp.indexOf("=")).trim();
 }

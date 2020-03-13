@@ -4,14 +4,12 @@
    New Perspectives on HTML5, CSS3, and JavaScript 6th Edition
    Tutorial 11
    Case Problem 1
-
    Author: Audrey Sparks
    Date:   3-11-2020
    
    Filename: bw_review.js
 	
    Functions List:
-
    init()
       Initializes the contents of the web page and sets up the
       event handlers.
@@ -23,79 +21,81 @@
    turnOffStars(e)
       Function that restores the stars to empty colors, removing
       the user rating for the book.
-
    updateCount()
       Updates the count of characters in the wordCountBox
       element.
-
    countCharacters(textStr)
       Returns the number of a non-whitespace characters
       within textStr
-
 */ 
-  
-window.onload = init();
+window.onload = init;
 
-function init() {// Initializes the contents of the web page and sets up the event handlers.
-   //selects every star image and stores as shorthand array
-   var stars = document.querySelectorAll("span#stars img");
 
-   for (var i = 0; i < stars.length; i++) {
-      stars[i].style.cursor = "pointer"; //add pointer
+function init() {
+//Initializes the contents of the web page and sets up the event handlers.
 
-      stars[i].addEventListener("mouseenter", lightStars); //stars to show up
-   }
-   document.querySelector("textarea").addEventListener("keyup", updateCont);
+  var stars = document.querySelectorAll("span#stars img");
+  for (var i = 0; i < stars.length; i++) {
+     stars[i].style.cursor = "pointer";
+     stars[i].addEventListener("mouseenter", lightStars);
+  }
+
+  document.getElementById("comment").addEventListener("keyup", updateCount);
 }
 
-function lightStars(event) { // Function that colors the stars representing the user rating for the book.
-   var stars = document.querySelectorAll("span#stars img") //have the yellow stars pop up 
-   var target = event.target;
-   target.addEventListener("mouseleave", function (event) {
-      console.log("leaving", event.target.getAttribute("alt"));
-      var leavingStarNumber = event.target.getAttribute("alt")
-      for (var i = leavingStarNumber; i < stars.length; i++) {
-         stars[i].src = "bw_star.png";
-         console.log(stars)
-      }
-   })
-   var starNumber = event.target.getAttribute("alt");
-   console.log("test", starNumber);
+function lightStars(e) {
+//Function that colors the stars representing the user rating for the book.
+  var starNumber = e.target.alt;
+  var stars = document.querySelectorAll("span#stars img");
+  for (var i = 0; i < starNumber; i++) {
+     stars[i].src = "bw_star2.png";
+  }
+  for (var j = starNumber; j < 5; j++) {
+     stars[j].src = "bw_star.png";
+  }
 
-   for (var i = 0; i < starNumber; i++) { //have star pop up when hovered
-      stars[i].src = "bw_star2.png";
-      document.querySelector("input#rating").value = starNumber + " stars";
-   }
-   for (var i = starNumber; i < 5; i++) {
-      stars[i].src = "bw_star.png";
+  document.getElementById("rating").value = starNumber + " stars";
+  e.target.addEventListener("mouseleave", turnOffStars);
 
-      console.log("Exit", i); //when mouse is moved star stays in place
-   }
-}
+  e.target.addEventListener("click",
 
-function updateCont() {  // Updates the count of characters in the wordCountBox element.
-   var comentText = "textarea";
-   var charCount = countCharacters(commentText);
+     function () {
+
+        e.target.removeEventListener("mouseleave", turnOffStars);
+
+     }
+  )
 
 }
 
+function turnOffStars(e) {
+// Function that restores the stars to empty colors, removing the user rating for the book.
+  var stars = document.querySelectorAll("span#stars img");
+  for (var i = 0; i < 5; i++) {
+     stars[i].src = "bw_star.png";
+  }
+  document.getElementById("rating").value = "";
+}
+
+function updateCount() {
+  var commentText = document.getElementById("comment").value;
+  var charCount = countCharacters(commentText);
+  var wordCountBox = document.getElementById("wordCount");
+  wordCountBox.value = charCount + "/1000";
+  if (charCount > 1000) {
+//  Updates the count of characters in the wordCountBox element.
+     wordCountBox.style.color = "white";
+     wordCountBox.style.backgroundColor = "red";
+  } else {
+     wordCountBox.style.color = "black";
+     wordCountBox.style.backgroundColor = "white";
+  }
+
+}
 /*=================================================================*/
 
 function countCharacters(textStr) {
-   var commentregx = /\s/g;
-   var chars = textStr.replace(commentregx, "");
-   return chars.length;
-}   
-  
-
-
-  
-  
-  
-/*=================================================================*/
-
-function countCharacters(textStr) {
-   var commentregx = /\s/g;
-   var chars = textStr.replace(commentregx, "");
-   return chars.length;
-}   
+  var commentregx = /\s/g;
+  var chars = textStr.replace(commentregx, "");
+  return chars.length;
+}  
